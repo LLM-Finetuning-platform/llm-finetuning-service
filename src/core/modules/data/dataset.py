@@ -5,8 +5,7 @@ from ray.data import Dataset
 from typing import Optional
 from config.settings.dataset import DatasetConfig
 class IDataSet(ABC):
-    def __init__(self, dataConfig: DatasetConfig, url:AnyHttpUrl):
-        self.url = url
+    def __init__(self, dataConfig: DatasetConfig):
         self.config = dataConfig
         try:
             self.dataset = self._database()
@@ -24,6 +23,8 @@ class IDataSet(ABC):
             raise e
     @property
     def data(self)->Optional[Dataset]:
-        return self.dataset
-
+        try:
+            return self.dataset
+        except Exception as e:
+            raise e
 

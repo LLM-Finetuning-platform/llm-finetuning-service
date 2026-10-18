@@ -1,13 +1,15 @@
 from pydantic_settings import BaseSettings
 from pydantic import Field
 from utils.enums.datasource import Datasources
-from typing import List
+from typing import List, Optional
 class Keys(BaseSettings):
    access_key: str = Field(description="""Default access key""")
    secret_key: str = Field(description="""Default secret value""")
    enpoint_url: str = Field(description="""Endpoint url for the datasource""")
 class IAMRole(BaseSettings):
-   role: str = Field(description="""IAM role for access""")
+   role_arn: str = Field(description="""IAM role for access""")
+   session_name: Optional[str] = Field(default = None,description= """Session Identifier""")
+   region: Optional[str] = Field(default = None, description = """Region Identifier""")
 
 class DatasetConfig(BaseSettings):
    type:  Datasources = Field(default=Datasources.miniIO, description="""Type of datasource""")
