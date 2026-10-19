@@ -1,6 +1,5 @@
 import ray
 from abc import ABC, abstractmethod
-from pydantic import AnyHttpUrl
 from ray.data import Dataset
 from typing import Optional
 from config.settings.dataset import DatasetConfig
@@ -14,7 +13,7 @@ class IDataSet(ABC):
 
     @abstractmethod
     def _format_adaptation_s3(self):
-        """"""
+        """Based on type of datasource update to s3 Ray compatible format"""
     def _database(self) -> Optional[Dataset]:
         try:
             fs = self._format_adaptation_s3()
