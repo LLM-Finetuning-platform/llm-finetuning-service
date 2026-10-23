@@ -1,6 +1,8 @@
 import pyarrow.fs as pafs
+
+from config.settings.dataset import IAMRole, Keys
 from src.core.modules.data.dataset import IDataSet
-from config.settings.dataset import Keys, IAMRole
+from src.utils.lib.exceptions.format import RayDataFormatError
 
 class MiniIOLocal(IDataSet):
 
@@ -12,6 +14,6 @@ class MiniIOLocal(IDataSet):
                secret_key = self.config.access.secret_key
            ) 
         elif isinstance(self.config.access,IAMRole):
-            raise Exception("""Mini IO needs Keys rather than IAM Role""")
+            raise TypeError("""Mini IO needs Keys rather than IAM Role""")
      
-        raise Exception("""Check the access config type""") 
+        raise RayDataFormatError("""Check the access config type""") 
