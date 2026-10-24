@@ -3,4 +3,4 @@ from enum import Enum
 
 class Datasources(Enum):
     miniIO = 0
-    s3 = 1 
+    s3 = 1
