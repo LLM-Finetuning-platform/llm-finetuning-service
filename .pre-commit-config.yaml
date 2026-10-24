@@ -9,5 +9,4 @@ repos:
       - id: ruff-check
         args:
           - --fix
-          - -v
       - id: ruff-format
