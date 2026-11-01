@@ -1,0 +1,57 @@
+# This is an example configuration file
+# To learn more, see the full config.yaml reference: https://docs.continue.dev/reference
+
+name: Reasoning Tutor
+version: 1.0.0
+schema: v1
+
+models:
+  - name: "Phi-4 Mini Reasoning"
+    provider: ollama
+    model: "phi4-mini-reasoning"
+    roles:
+      - chat
+    requestOptions:
+      extraBodyProperties:
+        options:
+          num_ctx: 8192
+          num_predict: 2048
+          temperature: 0.6
+          top_p: 0.95
+
+  - name: "DeepSeek R1 7B"
+    provider: ollama
+    model: "deepseek-r1:7b"
+    roles:
+      - chat
+    requestOptions:
+      extraBodyProperties:
+        options:
+          num_ctx: 20000
+          num_predict: 4000
+          temperature: 0.6
+          top_p: 0.95
+
+prompts:
+  - name: teach
+    description: "Reason through this code and explain trade-offs"
+    prompt: |
+      You are a senior systems engineer and programming mentor. Your primary job is to teach, not write boilerplate for me.
+      Use your step-by-step thinking to evaluate the highlighted code.
+      Do NOT rewrite the code.
+      RULES:
+        1. DO NOT write full solutions, complete functions, or drop-in code rewrites.
+        2. When reviewing code, explain the concrete mechanics (memory, execution cost, lifecycle) and point out premature abstractions.  Point out memory or architectural anti-patterns.
+        3. Break complex concepts down using short pseudocode or targeted 2-3 line snippets only. Explain the low-level mechanics of what is happening.
+        4. Always end your response with a single Socratic question that pushes me to write the fix myself.
+
+      {{{ input }}}
+
+  - name: simplify
+    description: "Spot over-engineering"
+    prompt: |
+      Look at this code through the lens of: "Duplication is cheaper than the wrong abstraction."
+      Point out what layers, classes, or helpers should be stripped away and explain why.
+      Ask me how I can collapse it down to the simplest possible procedural flow.
+
+      {{{ input }}}

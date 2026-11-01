@@ -11,9 +11,6 @@ class Models:
         """
         return {}
 
-    def get_model(self, name: str):
-        return self.list[name]
-
     @property
     def models(self) -> dict[str, Model]:
         return self.list
