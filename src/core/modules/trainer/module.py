@@ -1,6 +1,5 @@
 from typing import Literal
 
-from ray.data import Dataset
 from ray.train.huggingface.transformers import prepare_trainer
 from transformers import AutoModelForCausalLM
 from transformers.trainer import Trainer
@@ -14,7 +13,6 @@ from src.core.modules.trainer.peft.base import BasePEFT
 class TrainerModule:
     def __init__(
         self,
-        dataset: Dataset,
         algorithm: BaseAlgorithm,
         peft_method: BasePEFT,
         model: Model,
@@ -22,7 +20,6 @@ class TrainerModule:
         self.algorithm = algorithm
         self.peft_method = peft_method
         self.model = model
-        self.dataset = dataset
 
     def _initialse_trainer(
         self,
@@ -46,6 +43,3 @@ class TrainerModule:
         )
         trainer.add_callback(callback_fn)
         return prepare_trainer(trainer)
-
-    def run(self):
-        pass
