@@ -1,0 +1,11 @@
+name: Finetune Service CI 
+on: 
+    pull_request: 
+        branches:
+          - main
+          - develop
+jobs:
+    python-ci:
+        uses: LLM-Finetuning-platform/shared-workflows/.github/workflows/python-ci.yaml@main
+        secrets: inherit
+
