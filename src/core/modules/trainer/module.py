@@ -1,5 +1,6 @@
 from typing import Literal
 
+from ray.train import get_dataset_shard
 from ray.train.huggingface.transformers import prepare_trainer
 from transformers import AutoModelForCausalLM
 from transformers.trainer import Trainer
@@ -30,16 +31,11 @@ class TrainerModule:
         hash_column: str | None,
         **kwargs,
     ) -> Trainer:
-        _train, _test = self.dataset.streaming_train_test_split(
-            test_size=test_size,
-            seed=seed,
-            split_type=split_type,
-            ray_remote_kwargs=kwargs,
-            hash_column=hash_column,
-        )
         trainer = self.algorithm.trainer(
             model=AutoModelForCausalLM.from_pretrained(self.model.model_id),
             args=self.algorithm.args,
+            train_dataset=get_dataset_shard("train"),
+            eval_dataset=get_dataset_shard("val"),
         )
         trainer.add_callback(callback_fn)
         return prepare_trainer(trainer)
