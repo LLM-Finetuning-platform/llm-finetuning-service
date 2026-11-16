@@ -1,5 +1,3 @@
-from typing import Literal
-
 from ray.train import get_dataset_shard
 from ray.train.huggingface.transformers import prepare_trainer
 from transformers import AutoModelForCausalLM
@@ -25,10 +23,6 @@ class TrainerModule:
     def _initialse_trainer(
         self,
         callback_fn: TrainerCallback,
-        test_size: float,
-        seed: int,
-        split_type: Literal["hash", "random"],
-        hash_column: str | None,
         **kwargs,
     ) -> Trainer:
         trainer = self.algorithm.trainer(
