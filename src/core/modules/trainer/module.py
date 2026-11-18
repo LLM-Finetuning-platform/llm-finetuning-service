@@ -15,10 +15,15 @@ class TrainerModule:
         algorithm: BaseAlgorithm,
         peft_method: BasePEFT,
         model: Model,
+        callback_fn: TrainerCallback,
+        **kwargs,
     ):
         self.algorithm = algorithm
         self.peft_method = peft_method
         self.model = model
+        self.trainer: Trainer = self._initialse_trainer(
+            callback_fn=callback_fn, **kwargs
+        )
 
     def _initialse_trainer(
         self,
@@ -33,3 +38,7 @@ class TrainerModule:
         )
         trainer.add_callback(callback_fn)
         return prepare_trainer(trainer)
+
+    @property
+    def trainer(self):
+        return self.trainer
