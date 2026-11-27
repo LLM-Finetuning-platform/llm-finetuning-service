@@ -27,7 +27,7 @@ class TrainerModule:
 
     def _initialse_trainer(
         self,
-        callback_fn: TrainerCallback,
+        callback: TrainerCallback,
         **kwargs,
     ) -> Trainer:
         trainer = self.algorithm.trainer(
@@ -36,7 +36,7 @@ class TrainerModule:
             train_dataset=get_dataset_shard("train"),
             eval_dataset=get_dataset_shard("val"),
         )
-        trainer.add_callback(callback_fn)
+        trainer.add_callback(callback=callback)
         return prepare_trainer(trainer)
 
     @property
