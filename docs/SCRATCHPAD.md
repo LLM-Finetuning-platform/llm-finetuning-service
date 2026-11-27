@@ -1,2 +1,3 @@
-* Complete temporal signalling first
-* Then Mlflow addition
+- Complete temporal signalling first
+    - Current status: scaffolded reporter actor and callback, complete it  
+- Then Mlflow addition
