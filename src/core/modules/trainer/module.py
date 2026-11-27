@@ -1,5 +1,3 @@
-from typing import Literal
-
 from ray.train import get_dataset_shard
 from ray.train.huggingface.transformers import prepare_trainer
 from transformers import AutoModelForCausalLM
@@ -17,18 +15,19 @@ class TrainerModule:
         algorithm: BaseAlgorithm,
         peft_method: BasePEFT,
         model: Model,
+        callback_fn: TrainerCallback,
+        **kwargs,
     ):
         self.algorithm = algorithm
         self.peft_method = peft_method
         self.model = model
+        self.trainer: Trainer = self._initialse_trainer(
+            callback_fn=callback_fn, **kwargs
+        )
 
     def _initialse_trainer(
         self,
-        callback_fn: TrainerCallback,
-        test_size: float,
-        seed: int,
-        split_type: Literal["hash", "random"],
-        hash_column: str | None,
+        callback: TrainerCallback,
         **kwargs,
     ) -> Trainer:
         trainer = self.algorithm.trainer(
@@ -37,5 +36,9 @@ class TrainerModule:
             train_dataset=get_dataset_shard("train"),
             eval_dataset=get_dataset_shard("val"),
         )
-        trainer.add_callback(callback_fn)
+        trainer.add_callback(callback=callback)
         return prepare_trainer(trainer)
+
+    @property
+    def trainer(self):
+        return self.trainer
